@@ -68,3 +68,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## MIDDLEWARE
+
+Es un pieza de código que se ejecuta entre que algo recibe un request y ese algo da respuesta a ese request. 
+
+En Redux este Middleware se ejecuta entre que se dispara una acción y esa acción llega al Redux. Sirve para mapear y entender más rápido los errores.

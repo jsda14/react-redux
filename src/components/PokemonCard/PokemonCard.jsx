@@ -1,15 +1,22 @@
-import { StarOutlined } from "@ant-design/icons";
 import { Card } from "antd";
+import { StarButton } from "../StartButton/StartButton";
 import Meta from "antd/es/card/Meta";
+import { useDispatch } from "react-redux";
+import { setFavorite } from "../../redux/actions";
 
-function PokemonCard ({pokemon}){
+function PokemonCard ({pokemon, image, abilities,}){
+	const dispatch = useDispatch();
+	
+	const handleOnFavorite = () => {
+		dispatch(setFavorite(pokemon.id));
+	}
 	return(
 		<Card
 			title={pokemon.name}
-			cover={<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/132.png" alt="Ditto"/>}
-			extra={<StarOutlined/>}
+			cover={<img src={image} alt={pokemon.name}/>}
+			extra={<StarButton isFavorite={pokemon.favorite} onClick={()=> handleOnFavorite()}/>}
 		>
-			<Meta description='fire, magic'/>
+			<Meta description={abilities}/>
 		</Card>
 	)
 }

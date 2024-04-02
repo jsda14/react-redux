@@ -7,4 +7,9 @@ function getPokemon (){
 	.catch( err => alert(err))
 }
 
-export { getPokemon }
+function getPokemonDetails(pokemon){
+	return axios.get(pokemon.url)
+	.then(res => res.data)
+	.catch( err => alert(err))
+}
+export { getPokemon, getPokemonDetails }

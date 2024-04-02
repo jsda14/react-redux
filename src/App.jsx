@@ -1,21 +1,28 @@
+import { Col, Spin } from 'antd';
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Col } from 'antd';
+import { getPokemon } from './api';
 import { PokemonList } from './components/PokemonList/PokemonList';
 import { Searcher } from './components/Searcher/Searcher';
-import { getPokemon } from './api';
-import { setPokemons as setPokemosActions } from './redux/actions';
+import { getPokemonsWithDetails, setLoading } from './redux/actions';
 
-import logo from './static/logo.svg';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import './App.css';
+import logo from './static/logo.svg';
 
-function App({pokemons, setPokemons}) {
+function App() {
+
+  const pokemons = useSelector(state => state.data.pokemons); //Recibe el estado y retorna el valor que quiero obtener del estado
+  const loading  = useSelector(state=> state.ui.loading);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function fetchPokemons() {
+      dispatch(setLoading(true));
       const pokemonResp = await getPokemon();
-      setPokemons(pokemonResp);
-    }
+      dispatch(getPokemonsWithDetails(pokemonResp));
+      dispatch(setLoading(false));
+    };
+
     fetchPokemons();
   }, []);
 
@@ -27,23 +34,18 @@ function App({pokemons, setPokemons}) {
       <Col span={8} offset={8}>
         <Searcher />
       </Col>
-      <PokemonList pokemons={pokemons}/>
+
+      {loading ?
+        (<Col>
+          <Spin spinning size='large'/>
+        </Col>)
+          :
+        (<PokemonList pokemons={pokemons}/>)
+      }
+
     </div>
   );
 }
 
-/**
- * mapStateToProps, función que recibe nuestro estado y retorna un objeto cuyas propiedades serán enviadas a los props del componente conectado a Redux
- */
-const mapStateToProps = (state) => ({
-  pokemons: state.pokemons
-});
 
-/**
- * mapDispatchToProps, función que se encarga de recibir el dispacher de Redux, además retorna un objeto que será mapeado a las propiedades pero con los actioncs creators
- */
-const mapDispatchToProps = (dispatch) => ({
-  setPokemons: (value)=> dispatch(setPokemosActions(value))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
