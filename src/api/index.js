@@ -1,10 +1,10 @@
 import axios from "axios";
 
-function getPokemon (){
+function getPokemons (){
 	return axios
 	.get('https://pokeapi.co/api/v2/pokemon?limit=152')
 	.then( resp =>  resp.data.results)
 	.catch( err => console.log(err))
 }
 
-export { getPokemon }
+export { getPokemons }
